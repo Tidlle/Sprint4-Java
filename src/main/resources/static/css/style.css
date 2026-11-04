@@ -469,6 +469,8 @@ tr.inativo { opacity: 0.5; }
 /* ---------- Ações e botões ---------- */
 
 .acoes { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+td.acoes { display: table-cell; white-space: nowrap; }
+td.acoes > * { display: inline-block; vertical-align: middle; margin-right: 0.4rem; }
 .acoes form { display: inline; }
 
 button, .btn, input[type=submit] {
