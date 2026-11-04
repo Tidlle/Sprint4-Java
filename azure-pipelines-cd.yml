@@ -1,0 +1,50 @@
+trigger: none
+pr: none
+
+resources:
+  pipelines:
+    - pipeline: ci
+      source: 'sprint4-ci'
+      trigger:
+        branches:
+          include:
+            - master
+
+variables:
+  - group: sprint4-secrets
+  - name: webAppName
+    value: 'app-vitalpet-rm00000'
+
+pool:
+  name: Default
+stages:
+  - stage: CD
+    displayName: 'CD - Deploy no Azure Web App'
+    jobs:
+      - job: Deploy
+        displayName: 'Deploy da aplicacao'
+        steps:
+          - download: ci
+            artifact: drop
+            displayName: 'Baixar o artefato gerado pelo CI'
+
+          - task: AzureWebApp@1
+            displayName: 'Deploy no Azure Web App + variaveis do banco'
+            inputs:
+              azureSubscription: 'sc-azure-sprint4'   # nome da Service Connection
+              appType: 'webAppLinux'
+              appName: '$(webAppName)'
+              runtimeStack: 'JAVA|17-java17'
+              package: '$(Pipeline.Workspace)/ci/drop/*.jar'
+              appSettings: >-
+                -SPRING_PROFILES_ACTIVE "sqlserver"
+                -SERVER_PORT "8080"
+                -WEBSITES_PORT "8080"
+                -SPRING_DATASOURCE_URL "$(DB_URL)"
+                -SPRING_DATASOURCE_USERNAME "$(DB_USER)"
+                -SPRING_DATASOURCE_PASSWORD "$(DB_PASSWORD)"
+
+          - script: |
+              echo "Aplicacao publicada em: https://$(webAppName).azurewebsites.net"
+              echo "Swagger: https://$(webAppName).azurewebsites.net/swagger-ui.html"
+            displayName: 'URLs da aplicacao'
