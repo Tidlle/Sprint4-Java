@@ -7,6 +7,7 @@ Aplicação web de gestão veterinária em **Java 17 + Spring Boot**, publicada 
 | Item | Link |
 |---|---|
 | Repositório (Java Advanced) | https://github.com/Tidlle/Sprint4-Java |
+| Vídeo de apresentação (Java Advanced) | https://www.youtube.com/watch?v=sEJ2-2YzSPo |
 | Aplicação online | https://app-vitalpet-rm562259.azurewebsites.net/web/login |
 | Swagger (API REST) | https://app-vitalpet-rm562259.azurewebsites.net/swagger-ui/index.html |
 | Repositório e pipelines (DevOps) | https://github.com/Tidlle/Sprint4-DevOps |

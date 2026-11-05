@@ -10,9 +10,9 @@ Critérios que o vídeo precisa cobrir (100 pontos): demonstração técnica com
 
 ## Antes de gravar (checklist)
 
-- [ ] Aplicação **online** aberta numa aba: `[URL DA APLICAÇÃO]`. Não grave em localhost.
+- [ ] Aplicação **online** aberta numa aba (abra com antecedência: o Web App pode levar 1 a 2 minutos para "acordar"): `https://app-vitalpet-rm562259.azurewebsites.net/web/login`. Não grave em localhost.
 - [ ] Banco com a massa de dados original (reinicie o container se já foi alterado).
-- [ ] Abas prontas: README no GitHub, aplicação logada como ADMIN, Swagger (`/swagger-ui.html`), repositório no VS Code/IntelliJ com `db/migration`, `SecurityConfig.java` e `ConsultaService.java` abertos.
+- [ ] Abas prontas: as 5 abas do GitHub listadas no bloco 3, a aplicação logada como ADMIN e o Swagger (`/swagger-ui/index.html`). O repositório precisa estar **público** (confira numa janela anônima).
 - [ ] Segunda janela anônima para logar como VETERINARIO sem deslogar o ADMIN.
 - [ ] Resolução mínima 1080p, microfone testado, notificações desligadas, zoom do navegador em 110%.
 - [ ] Credenciais: ADMIN `admin@vitalpet.com.br` / VETERINARIO `ana.souza@vitalpet.com.br`, senha `VitalPet@123`.
@@ -31,7 +31,7 @@ Critérios que o vídeo precisa cobrir (100 pontos): demonstração técnica com
 
 ## 2. Narrativa da solução (0:45 – 2:30)
 
-**Tela:** README do GitHub, seção "Descrição da Solução".
+**Tela:** README do GitHub, seção "Narrativa da solução".
 
 *"O problema que a Clyvo Vet nos trouxe é que a clínica veterinária cuida bem do pet **durante** a consulta, mas perde o fio depois dela. O tutor sai do consultório, esquece o retorno, esquece o tratamento, e a clínica não tem como acompanhar. Isso gera perda de continuidade do cuidado e perda de receita com retornos que não acontecem."*
 
@@ -43,27 +43,53 @@ Critérios que o vídeo precisa cobrir (100 pontos): demonstração técnica com
 
 ## 3. Decisões de design e escolhas tecnológicas (2:30 – 5:00)
 
-**Tela:** VS Code com a árvore do projeto; depois `pom.xml`; depois `SecurityConfig.java`.
+**Tudo neste bloco é mostrado no GitHub**, no navegador. Deixe estas abas abertas antes de gravar, nesta ordem (repositório: `https://github.com/Tidlle/Sprint4-Java`):
 
-*"Vou passar pelas principais decisões. Usamos **Java 17 com Spring Boot 3.3**, porque é o framework que a disciplina trabalha, tem ecossistema maduro para web, segurança e acesso a dados, e facilita o deploy em container."*
+| Aba | Endereço | Usada em |
+|---|---|---|
+| 1 | README, ancorado na tabela **Decisões de design e tecnologia** | 3.1 e 3.6 |
+| 2 | `.../tree/main/src/main/java/com/clyvo/vitalpet` | 3.2 |
+| 3 | `.../tree/main/src/main/resources/db` | 3.3 |
+| 4 | `.../blob/main/src/main/java/com/clyvo/vitalpet/config/SecurityConfig.java` | 3.4 |
+| 5 | `.../tree/main/src/main/resources` (pastas `templates` e `static`) | 3.5 |
 
-**Mostrar a árvore de pacotes (`controller`, `service`, `repository`, `model`, `dto`, `mapper`, `web`).**
+Dica: aumente o zoom do navegador (Ctrl +) nos arquivos de código para ficarem legíveis no vídeo.
 
-*"Organizamos o código em camadas. O `controller` expõe a API REST, o `web` tem os controllers das telas, o `service` concentra as regras de negócio, o `repository` acessa o banco com Spring Data JPA, e usamos `dto` e `mapper` para nunca expor a entidade direto. Separar controller web de controller REST nos permitiu manter a API aberta para o app mobile e, ao mesmo tempo, proteger as telas."*
+### 3.1 Visão geral e stack (aba 1)
 
-**Abrir a pasta `db/migration`.**
+**Tela:** README, role até a tabela **Stack** e depois até **Decisões de design e tecnologia**.
 
-*"Para o banco usamos **Flyway**. O schema e a massa de dados são versionados em `V1__create_schema` e `V2__seed_data`. Isso garante que qualquer ambiente, local ou nuvem, sobe com o mesmo banco, sem script manual. Temos duas variações: H2 para desenvolvimento e testes, e MySQL para a nuvem."*
+*"Vou passar pelas principais decisões técnicas, todas documentadas aqui no README do repositório. Usamos **Java 17 com Spring Boot 3.3**, porque é o framework que a disciplina trabalha, tem um ecossistema maduro para web, segurança e acesso a dados, e facilita o deploy em nuvem."*
 
-**Abrir `SecurityConfig.java`.**
+### 3.2 Camadas (aba 2)
 
-*"Para segurança usamos **Spring Security** com dois perfis: ADMIN e VETERINARIO. As rotas `/web` exigem login, e dentro delas o ADMIN tem acesso a tudo, enquanto o veterinário não acessa Clínicas, Veterinários e Tutores. Além disso, o veterinário só enxerga as próprias consultas. Esse vínculo vem da tabela de usuários, que liga o usuário ao registro de veterinário."*
+**Tela:** pasta `src/main/java/com/clyvo/vitalpet`. Passe o mouse sobre `controller`, `web`, `service`, `repository`, `model`, `dto`, `mapper`.
 
-**Mostrar rapidamente a tela de login.**
+*"Organizamos o código em camadas. A pasta `controller` expõe a API REST, a pasta `web` tem os controllers das telas, o `service` concentra as regras de negócio, o `repository` acessa o banco com Spring Data JPA, e usamos `dto` e `mapper` para nunca expor a entidade direto. Separar o controller web do controller REST nos permitiu manter a API aberta para o app mobile e, ao mesmo tempo, proteger as telas com login."*
 
-*"Para o frontend usamos **Thymeleaf**, renderizado no servidor, com um tema escuro e os mesmos ícones e a mesma logo do nosso aplicativo mobile, para manter a identidade visual entre as plataformas. Como a interface é renderizada no servidor, o próprio Thymeleaf esconde itens de menu conforme o perfil."*
+### 3.3 Flyway e bancos (aba 3)
 
-*"Por fim, mantivemos a API REST documentada com **Swagger** e testes automatizados cobrindo contexto, segurança e a regra do alerta."*
+**Tela:** pasta `src/main/resources/db`. Entre em `migration` e depois em `migration-sqlserver`; abra o `V1__create_schema.sql`.
+
+*"Para o banco usamos **Flyway**. O schema e a massa de dados são versionados em dois arquivos: `V1__create_schema` e `V2__seed_data`. Isso garante que qualquer ambiente sobe com o mesmo banco, sem script manual. Temos duas versões: a pasta `migration`, para o H2 em memória, usado em desenvolvimento e testes, e a `migration-sqlserver`, em T-SQL, para o Azure SQL na nuvem."*
+
+### 3.4 Spring Security (aba 4)
+
+**Tela:** arquivo `SecurityConfig.java`. Aponte com o mouse as regras de rota por perfil (`hasRole`).
+
+*"Para segurança usamos **Spring Security** com dois perfis: ADMIN e VETERINARIO. As rotas `/web` exigem login, e aqui estão as regras: o ADMIN acessa tudo, enquanto o veterinário não acessa Clínicas, Veterinários e Tutores. Além disso, o veterinário só enxerga as próprias consultas. Esse vínculo vem da tabela de usuários, que liga o usuário ao registro de veterinário."*
+
+### 3.5 Frontend (aba 5)
+
+**Tela:** pastas `templates` e `static` (abra `static/img` para mostrar a logo e os ícones). Se preferir, mostre os prints no README.
+
+*"Para o frontend usamos **Thymeleaf**, renderizado no servidor. As telas ficam nesta pasta `templates`, e aqui em `static` estão o CSS, a logo e os ícones. Fizemos um tema escuro com os mesmos ícones e a mesma logo do nosso aplicativo mobile, para manter a identidade visual entre as plataformas. Como a interface é renderizada no servidor, o próprio Thymeleaf esconde itens do menu conforme o perfil do usuário."*
+
+### 3.6 Fechamento do bloco (volte à aba 1)
+
+**Tela:** README, tabela **Decisões de design e tecnologia**.
+
+*"Por fim, mantivemos a API REST documentada com **Swagger** e testes automatizados cobrindo o contexto, a segurança e a regra do alerta. Todas essas decisões e as justificativas de cada uma estão resumidas nesta tabela do README."*
 
 ---
 
@@ -73,7 +99,7 @@ Critérios que o vídeo precisa cobrir (100 pontos): demonstração técnica com
 
 **Tela:** aplicação online, login como ADMIN.
 
-*"Vamos para a aplicação, que está rodando online neste endereço, `[URL]`, não é localhost. Entro como ADMIN."*
+*"Vamos para a aplicação, que está rodando online no Azure, neste endereço, `app-vitalpet-rm562259.azurewebsites.net`. Não é localhost. Entro como ADMIN."*
 
 **Ação:** logar. Passar o mouse sobre os cards do dashboard.
 
@@ -133,30 +159,30 @@ Critérios que o vídeo precisa cobrir (100 pontos): demonstração técnica com
 
 ## 5. Integração multidisciplinar (12:00 – 13:45)
 
-**Tela:** alternar entre README, repositório do app mobile, scripts SQL, diagrama. Para cada disciplina, mostre **uma evidência concreta**.
+**Tela:** README, tabela **Integração multidisciplinar**. Para cada disciplina, abra a evidência indicada.
 
-*"Este projeto não é só Java, ele conversa com as outras disciplinas do semestre. Vou mostrar onde cada uma aparece."*
+*"Este projeto também conversa com as outras disciplinas do semestre. Vou mostrar uma evidência de cada."*
 
-- **Mobile Application Development** *(confirmado: o app existe em `VitalPet-Challenge`)*
-  **Mostrar:** repositório do app mobile, `src/services/petService.ts` e `tutorService.ts`.
-  *"O aplicativo mobile em React Native consome a mesma API REST que mostrei aqui no Swagger. A API ficou aberta justamente para isso, e a identidade visual do app, cores, ícones e logo, foi reaproveitada nesta interface web."*
+- **Mobile** *(confirmado)*
+  **Mostrar:** repositório do app mobile, arquivo `src/services/petService.ts`.
+  *"O aplicativo mobile consome a mesma API REST deste projeto, e a logo, os ícones e as cores do app foram reaproveitados aqui."*
 
-- **DevOps Tools & Cloud Computing** *(confirmado: Dockerfile e deploy em ACR + ACI estão no README)*
-  **Mostrar:** `Dockerfile`, seção de Docker/Azure do README, `docs/arquitetura-devops.drawio`.
-  *"A aplicação foi containerizada com Dockerfile, roda como usuário não-root, e é publicada em um Azure Container Registry e executada no Azure Container Instance junto com um container MySQL. Por isso ela está acessível online. [SE TIVER PIPELINE NO AZURE DEVOPS, CITE: e a cada push na branch master a pipeline faz build, testes e deploy.]"*
+- **DevOps** *(confirmado)*
+  **Mostrar:** `azure-pipelines-ci.yml`, `azure-pipelines-cd.yml` e `docs/arquitetura-DevOps.png`.
+  *"A cada push, as pipelines do Azure DevOps fazem o build, rodam os testes e publicam a aplicação no Azure, com o banco no Azure SQL. Foi assim que ela chegou online."*
 
-- **Mastering Relational and Non-Relational Database** *[CONFIRME o que existe: modelagem, procedures, MongoDB]*
-  **Mostrar:** `script_bd.sql` e `db/migration/mysql`.
-  *"O modelo relacional está versionado em scripts SQL, com Flyway aplicando schema e carga. [CITE: procedures, funções e trigger de auditoria, e a exportação para JSON/MongoDB, se existirem e estiverem ligados a este banco.]"*
+- **Banco de dados** *(confirmado; [cite procedures ou MongoDB só se estiverem ligados a este banco])*
+  **Mostrar:** pastas `db/migration` e `db/migration-sqlserver`.
+  *"O modelo relacional tem 8 tabelas, versionadas em scripts SQL: uma versão para H2 e outra para o Azure SQL."*
 
-- **Compliance, Quality Assurance & Tests** *[CONFIRME]*
-  **Mostrar:** Azure Boards (backlog, release plan) e a pasta de testes.
-  *"O planejamento foi feito no Azure Boards, com backlog, critérios de aceite e release plan, e no código temos testes automatizados de contexto, segurança e regra de negócio, que rodam com `./mvnw test`."*
+- **Compliance e testes** *[CONFIRME]*
+  **Mostrar:** Azure Boards e a pasta `src/test`.
+  *"Planejamos o projeto no Azure Boards e temos testes automatizados, que rodam a cada push."*
 
-- **Disruptive Architectures (IoT, IoB e IA)** *[CONFIRME se a IA foi integrada; se não, omita este bloco]*
-  *"[Descreva a funcionalidade de IA e onde ela aparece na aplicação.]"*
+- **IA** *[CONFIRME; se não houver, apague este item]*
+  *"[Diga em uma frase onde a IA aparece na aplicação.]"*
 
-*"Cada uma dessas evidências está documentada no README do repositório, na seção de integração multidisciplinar."*
+*"Todas essas evidências estão na tabela do README."*
 
 ---
 
